@@ -129,7 +129,8 @@ def port_factory(bus_itf: ElementTree) -> Port:
     vlnv = vlnv_creator(bus_itf.get("VLNV"))
 
     # Memory mapped port
-    if vlnv.name == "aximm":
+    # print("name: {} btype: {} vlnv: {}".format(name, btype, vlnv.name))
+    if vlnv.name == "aximm" or vlnv.name == "apb":
         if determine_if_bus_driver(btype):
             port = ManagerPort(name=name, vlnv=vlnv)
         else:
@@ -167,7 +168,7 @@ def external_port_factory(b_itf: ElementTree) -> Port:
 
     driver = b_itf.get("TYPE") == "INITIATOR" or b_itf.get("TYPE") == "MASTER"
     vlnv = Vlnv(vendor="extern", library="extern", name=porttype, version=(1, 0))
-    if vlnv.name == "aximm":
+    if vlnv.name == "aximm" or vlnv.name == "apb":
         if driver:
             port = ManagerPort(name=bname, vlnv=vlnv, external=True)
         else:
